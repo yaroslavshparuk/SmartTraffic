@@ -22,25 +22,36 @@ L.Marker.prototype.options.icon = iconDefault;
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements AfterViewInit  {
-  private map : any;
+export class MapComponent implements OnInit, AfterViewInit {
+  private map: any;
 
   constructor(private markerService: MarkerService) { }
+  ngOnInit(): void {
+    this.map = L.map('map', {
+      center: [50.45030410732321, 30.524445176124576],
+      zoom: 19
+    });
+  }
 
   ngAfterViewInit(): void {
-    this.map = L.map('map', {
-      center: [ 39.8282, -98.5795 ],
-      zoom: 3
-    });
-
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 18,
+      maxZoom: 19,
       minZoom: 1,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     });
-
     tiles.addTo(this.map);
-    // this.markerService.makeCapitalMarkers(this.map);
-    this.markerService.makeCapitalCircleMarkers(this.map);
+    this.map.on('click', (e: any) => {
+      console.log(e);
+
+      const popup = L.popup().setContent('<button id="button-submit" type="button">Add traffic light</button>').setLatLng(e.latlng);
+      this.map.openPopup(popup);
+      const buttonSubmit = L.DomUtil.get('button-submit') as HTMLElement;
+      L.DomEvent.addListener(buttonSubmit, 'click', () => {
+        this.map.closePopup(popup);
+        const circle = L.circleMarker([e.latlng.lat, e.latlng.lng]);
+        circle.bindPopup('<button>Properties</button><button>Remove</button>');
+        circle.addTo(this.map);
+      });
+    });
   }
 }

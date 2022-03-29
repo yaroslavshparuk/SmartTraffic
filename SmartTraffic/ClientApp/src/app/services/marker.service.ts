@@ -28,7 +28,8 @@ export class MarkerService {
         const lon = c.geometry.coordinates[0];
         const lat = c.geometry.coordinates[1];
         const circle = L.circleMarker([lat, lon]);
-        circle.bindPopup(this.popupService.makeCapitalPopup(c.properties));
+        //circle.bindPopup(this.popupService.makeCapitalPopup(c.properties));
+        circle.bindPopup('<button>Add Traffic light</button>');
         circle.addTo(map);
       }
     });
