@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
-import { PopupService } from './popup.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +8,7 @@ import { PopupService } from './popup.service';
 export class MarkerService {
   capitals: string = '/assets/data/usa-capitals.geojson';
 
-  constructor(private http: HttpClient, private popupService: PopupService) { }
+  constructor(private http: HttpClient) { }
 
   makeCapitalMarkers(map: L.Map): void {
     this.http.get(this.capitals).subscribe((res: any) => {
