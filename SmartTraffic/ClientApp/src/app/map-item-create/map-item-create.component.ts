@@ -8,18 +8,19 @@ import { MapItemPropertyComponent } from '../map-item-property/map-item-property
 })
 export class MapItemCreateComponent {
   constructor(
-  @Inject(MAT_DIALOG_DATA) private data: any,
-   private dialog: MatDialog,
-   private dialogRef: MatDialogRef<MapItemCreateComponent>,) { }
+    @Inject(MAT_DIALOG_DATA) private data: any,
+    private dialog: MatDialog,
+    private dialogRef: MatDialogRef<MapItemCreateComponent>,) { }
 
   addItem(): void {
-    let trafficLightMarker = L.circleMarker([this.data.latlng.lat, this.data.latlng.lng]);
-        trafficLightMarker.addEventListener('click', () => {
-          this.dialog.open(MapItemPropertyComponent, {
-            data: { lat: this.data.latlng.lat, lng: this.data.latlng.lng }
-          })
+    L.marker([this.data.latlng.lat, this.data.latlng.lng])
+      .setIcon(L.icon({ iconUrl: "../../assets/icons/traffic-light-icon.png", iconSize: [25, 25] }))
+      .addEventListener('click', () => {
+        this.dialog.open(MapItemPropertyComponent, {
+          data: { lat: this.data.latlng.lat, lng: this.data.latlng.lng }
         })
-        trafficLightMarker.addTo(this.data.map);
+      })
+      .addTo(this.data.map);
     this.close();
   }
 
