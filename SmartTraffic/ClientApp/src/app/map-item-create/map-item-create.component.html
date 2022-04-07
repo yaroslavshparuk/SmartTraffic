@@ -1,2 +1,19 @@
-<button mat-raised-button color="primary" (click)="addItem()">Add</button>
-<button mat-raised-button color="warn" (click)="close()">Cancel</button>
+<h1 mat-dialog-title>Create traffic light</h1>
+<div>
+  <mat-form-field appearance="fill">
+    <mat-label>Select type</mat-label>
+    <mat-select required [(value)]="trafficLightType">
+      <mat-option [value]="type" *ngFor="let type of trafficLightTypes()">{{type}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div *ngIf="!!trafficLightType" align="start">
+    <button mat-stroked-button>Choose 1st direction</button>
+  </div>
+  <div *ngIf="isBidirectional()" align="start">
+    <button mat-stroked-button>Choose 2nd direction</button>
+  </div>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-raised-button color="warn" (click)="close()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="addItem()">Add</button>
+</div>
