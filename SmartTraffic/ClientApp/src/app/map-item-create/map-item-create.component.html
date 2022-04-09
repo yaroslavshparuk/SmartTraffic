@@ -1,19 +1,29 @@
 <h1 mat-dialog-title>Create traffic light</h1>
-<div>
-  <div align="start">
-    <button mat-fab matTooltip="{{getTooltip}}" color="{{getColor}}" (click)="specifyDirection()">
-      <mat-icon>traffic</mat-icon>
-    </button>
-  </div>
-</div>
-<br>
-<mat-button-toggle-group multiple>
-  <mat-button-toggle value="left">Left</mat-button-toggle>
-  <mat-button-toggle value="straigt">Straigt</mat-button-toggle>
-  <mat-button-toggle value="right">Right</mat-button-toggle>
-</mat-button-toggle-group>
-<br>
-<div mat-dialog-actions align="end">
-  <button mat-raised-button color="warn" (click)="close()">Cancel</button>
-  <button mat-raised-button color="primary" (click)="addItem()">Add</button>
-</div>
+<mat-stepper orientation="vertical" [linear]="true" #stepper>
+  <mat-step [completed]="isDirectionsSelected">
+    <ng-template matStepLabel>Specify the direction of control</ng-template>
+    <div style="height: 100px;" align="start">
+      <button style="margin-top: 20px; margin-left: 5px;" mat-fab matTooltip="{{getTooltip}}" color="{{getColor}}"
+        (click)="specifyDirection()">
+        <mat-icon>traffic</mat-icon>
+      </button>
+    </div>
+    <div>
+      <button mat-button matStepperNext>Next</button>
+    </div>
+  </mat-step>
+  <mat-step [completed]="adjustmentDirections.length > 0">
+    <ng-template matStepLabel>Select adjustment directions</ng-template>
+    <div style="height: 100px;" align="start">
+      <mat-button-toggle-group style="margin-top: 20px; margin-right: 25px;" [(ngModel)]="adjustmentDirections" multiple>
+        <mat-button-toggle value="left">Left</mat-button-toggle>
+        <mat-button-toggle value="straigt">Straigt</mat-button-toggle>
+        <mat-button-toggle value="right">Right</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div align="end">
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="finish()">Finish</button>
+    </div>
+  </mat-step>
+</mat-stepper>

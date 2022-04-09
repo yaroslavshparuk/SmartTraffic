@@ -41,7 +41,7 @@ export class MapComponent implements OnInit, AfterViewInit {
               hidden$.next(false);
               this.editableLayers.removeLayer(layer);
               this.dialog.open(MapItemCreateComponent, {
-                data: { map: this.map, latlng: e.latlng, hidden$, directions$: new BehaviorSubject<any>(line) }
+                data: { map: this.map, latlng: e.latlng, hidden$, directions: line }
               });
             })
           }
@@ -62,7 +62,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     }).addTo(this.map);
     this.map.addLayer(this.editableLayers)
     var options = {
-      position: 'topleft',
+      position: 'topright',
       draw: {
         polyline: false,
         polygon: false,
