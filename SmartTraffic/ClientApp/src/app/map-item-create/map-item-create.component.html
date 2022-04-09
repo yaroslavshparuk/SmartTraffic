@@ -1,11 +1,18 @@
 <h1 mat-dialog-title>Create traffic light</h1>
 <div>
   <div align="start">
-    <button mat-fab matTooltip="Specify the direction of control" color="{{getColor}}" aria-label="Add more" (click)="specifyDirection()">
+    <button mat-fab matTooltip="{{getTooltip}}" color="{{getColor}}" (click)="specifyDirection()">
       <mat-icon>traffic</mat-icon>
     </button>
   </div>
 </div>
+<br>
+<mat-button-toggle-group multiple>
+  <mat-button-toggle value="left">Left</mat-button-toggle>
+  <mat-button-toggle value="straigt">Straigt</mat-button-toggle>
+  <mat-button-toggle value="right">Right</mat-button-toggle>
+</mat-button-toggle-group>
+<br>
 <div mat-dialog-actions align="end">
   <button mat-raised-button color="warn" (click)="close()">Cancel</button>
   <button mat-raised-button color="primary" (click)="addItem()">Add</button>

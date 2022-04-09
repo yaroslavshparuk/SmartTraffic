@@ -32,12 +32,14 @@ export class MapComponent implements OnInit, AfterViewInit {
           if (x) {
             this.map.addControl(this.drawControl);
             let line: L.LatLngExpression[] = [e.latlng, L.latLng(e.latlng.lat - -0.00017, e.latlng.lng)];
-            this.editableLayers.addLayer(L.polyline(line, { color: 'SlateBlue', weight: 10 }));
+            let layer = L.polyline([e.latlng, L.latLng(e.latlng.lat - -0.00017, e.latlng.lng)], { color: 'SlateBlue', weight: 10 });
+            this.editableLayers.addLayer(layer);
             (this.ElByClassName.nativeElement.querySelector('.leaflet-draw-edit-edit') as HTMLElement).click();
             this.map.on(L.Draw.Event.EDITED, () => this.map.removeControl(this.drawControl));
             var saveBtn = this.ElByClassName.nativeElement.querySelector('.leaflet-draw-actions') as HTMLElement;
             saveBtn.firstChild?.firstChild?.addEventListener('click', () => {
               hidden$.next(false);
+              this.editableLayers.removeLayer(layer);
               this.dialog.open(MapItemCreateComponent, {
                 data: { map: this.map, latlng: e.latlng, hidden$, directions$: new BehaviorSubject<any>(line) }
               });

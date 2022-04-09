@@ -14,7 +14,6 @@ export class MapItemCreateComponent implements OnInit {
     private dialog: MatDialog,
     private dialogRef: MatDialogRef<MapItemCreateComponent>,) { }
   ngOnInit(): void {
-
   }
 
   specifyDirection(): void {
@@ -23,8 +22,16 @@ export class MapItemCreateComponent implements OnInit {
   }
 
   public get getColor(): string {
-    return this.data?.directions$?.value?.length > 0 ? 'primary' : 'warn';
-}
+    return this.directions?.length > 0 ? 'primary' : 'warn';
+  }
+
+  public get getTooltip(): string {
+    return this.directions?.length > 0 ? 'Edit the direction of control' : 'Specify the direction of control';
+  }
+
+  private get directions() {
+    return this.data?.directions$?.value;
+  }
 
   addItem(): void {
     L.marker([this.data.latlng.lat, this.data.latlng.lng])
