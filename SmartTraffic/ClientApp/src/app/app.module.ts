@@ -6,10 +6,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { MapComponent } from './map/map.component';
-import { MarkerService } from './services/marker.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {A11yModule} from '@angular/cdk/a11y';
 import {CdkAccordionModule} from '@angular/cdk/accordion';
@@ -65,8 +62,6 @@ import { CommonModule } from '@angular/common';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
-    FetchDataComponent,
     MapComponent,
     MapItemPropertyComponent,
     MapItemCreateComponent
@@ -79,8 +74,7 @@ import { CommonModule } from '@angular/common';
     ReactiveFormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'map', component: MapComponent },
     ]),
     NoopAnimationsModule,
     A11yModule,
@@ -131,7 +125,7 @@ import { CommonModule } from '@angular/common';
     LeafletModule,
 	  LeafletDrawModule
   ],
-  providers: [MarkerService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
