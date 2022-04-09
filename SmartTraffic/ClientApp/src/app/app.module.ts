@@ -57,7 +57,9 @@ import {MatTreeModule} from '@angular/material/tree';
 import {OverlayModule} from '@angular/cdk/overlay';
 import { MapItemPropertyComponent } from './map-item-property/map-item-property.component';
 import { MapItemCreateComponent } from './map-item-create/map-item-create.component';
+import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { CommonModule } from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,
@@ -72,6 +74,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
+    CommonModule,
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -124,7 +127,8 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     OverlayModule,
     PortalModule,
     ScrollingModule,
-    LeafletModule
+    LeafletModule,
+	  LeafletDrawModule
   ],
   providers: [MarkerService],
   bootstrap: [AppComponent]

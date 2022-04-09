@@ -1,16 +1,9 @@
 <h1 mat-dialog-title>Create traffic light</h1>
 <div>
-  <mat-form-field appearance="fill">
-    <mat-label>Select type</mat-label>
-    <mat-select required [(value)]="trafficLightType">
-      <mat-option [value]="type" *ngFor="let type of trafficLightTypes()">{{type}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <div *ngIf="!!trafficLightType" align="start">
-    <button mat-stroked-button>Choose 1st direction</button>
-  </div>
-  <div *ngIf="isBidirectional()" align="start">
-    <button mat-stroked-button>Choose 2nd direction</button>
+  <div align="start">
+    <button mat-fab matTooltip="Specify the direction of control" color="{{getColor}}" aria-label="Add more" (click)="specifyDirection()">
+      <mat-icon>traffic</mat-icon>
+    </button>
   </div>
 </div>
 <div mat-dialog-actions align="end">
