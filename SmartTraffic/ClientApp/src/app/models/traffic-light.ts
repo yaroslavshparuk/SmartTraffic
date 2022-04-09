@@ -1,15 +1,12 @@
-import { Direction } from "./direction";
-import { TrafficLightType } from "./traffic-light-type";
+import { Point } from "./point";
 
 export class TrafficLight {
-  directions: Direction[];
-  location: L.LatLng;
-  trafficLightType: TrafficLightType;
-  activated: boolean;
-  constructor(directions: Direction[], location: L.LatLng , trafficLightType: TrafficLightType, activated: boolean) {
-    this.directions = directions;
-    this.location = location;
-    this.trafficLightType = trafficLightType;
-    this.activated = activated;
+  DirectionControl: Point;
+  AdjustmentDirection: string[];
+  Location: Point;
+  constructor(DirectionControl: Point, AdjustmentDirection: string[], Location: Point) {
+    this.DirectionControl = DirectionControl;
+    this.AdjustmentDirection = AdjustmentDirection;
+    this.Location = Location;
   }
 }
