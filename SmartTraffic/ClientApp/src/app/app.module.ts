@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { MapComponent } from './map/map.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {A11yModule} from '@angular/cdk/a11y';
 import {CdkAccordionModule} from '@angular/cdk/accordion';
 import {ClipboardModule} from '@angular/cdk/clipboard';
@@ -57,6 +56,7 @@ import { MapItemCreateComponent } from './map-item-create/map-item-create.compon
 import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -76,7 +76,6 @@ import { CommonModule } from '@angular/common';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'map', component: MapComponent },
     ]),
-    NoopAnimationsModule,
     A11yModule,
     CdkAccordionModule,
     ClipboardModule,
@@ -123,7 +122,8 @@ import { CommonModule } from '@angular/common';
     PortalModule,
     ScrollingModule,
     LeafletModule,
-	  LeafletDrawModule
+	  LeafletDrawModule,
+	  BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

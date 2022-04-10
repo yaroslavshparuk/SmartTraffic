@@ -1,5 +1,16 @@
-<h1 mat-dialog-title>Coordinates</h1>
-<div mat-dialog-content>
-  Lat: {{data.lat}}
-  Long: {{data.lng}}
+<div *ngIf="showDefaultContent$ | async; else selected">
+  <h1 mat-dialog-title>Coordinates</h1>
+  <div mat-dialog-content>
+    Id: {{data.item.id}}
+    Lat: {{data.item.location.latitude}}
+    Long: {{data.item.location.longitude}}
+  </div>
 </div>
+<ng-template #selected>
+  <div mat-dialog-content>
+    Item with Id: {{data.item.id}} was selected
+  </div>
+  <div>
+    <button mat-button (click)="closeAndChangeMode()">Confirm</button>
+  </div>
+</ng-template>

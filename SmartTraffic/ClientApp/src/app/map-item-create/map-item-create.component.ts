@@ -1,7 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MapItemPropertyComponent } from '../map-item-property/map-item-property.component';
-import * as L from 'leaflet';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TrafficLight } from '../models/traffic-light';
 import { Point } from '../models/point';
@@ -14,17 +12,25 @@ export class MapItemCreateComponent implements OnInit {
   adjustmentDirections: string[] = [];
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: any,
-    private dialog: MatDialog,
     private dialogRef: MatDialogRef<MapItemCreateComponent>,
     private snackBar: MatSnackBar,
-    private trafficLightService :TrafficLightService) {
+    private trafficLightService: TrafficLightService) {
   }
   ngOnInit(): void {
-
   }
 
   specifyDirection(): void {
-    this.data.hidden$.next(true);
+    this.data.specifyDirectionMode$.next(true);
+    this.close();
+  }
+
+  selectDublicate(): void {
+    this.data.selectDublicateMode$.next(true);
+    this.close();
+  }
+
+  selectOpposite(): void {
+    this.data.selectOppositeMode$.next(true);
     this.close();
   }
 
@@ -40,28 +46,20 @@ export class MapItemCreateComponent implements OnInit {
     return this.data.directions?.length > 0;
   }
 
-  addItemOnMap(): void {
-    L.marker([this.data.latlng.lat, this.data.latlng.lng])
-      .setIcon(L.icon({ iconUrl: "../../assets/icons/traffic-light-icon-2.png", iconSize: [22, 22] }))
-      .addEventListener('click', () => {
-        this.dialog.open(MapItemPropertyComponent, {
-          data: { map: this.data.map, lat: this.data.latlng.lat, lng: this.data.latlng.lng, directions: this.data.directions }
-        });
-      })
-      .addTo(this.data.map);
-    this.close();
+  public get isAdjustmentDirectionsSelected(): boolean {
+    return this.adjustmentDirections.length > 0;
   }
 
   finish(): void {
     if (this.adjustmentDirections.length == 0) { return; }
-    let directionControl = new Point(this.data.directions[1].lat, this.data.directions[1].lng);
-    let location = new Point(this.data.latlng.lat, this.data.latlng.lng);
-    let hasStraightAdjustmen = this.adjustmentDirections.includes('Straight');
-    let hasLeftAdjustmen = this.adjustmentDirections.includes('Left');
-    let hasRightAdjustmen = this.adjustmentDirections.includes('Right');
-    var trafficLight = new TrafficLight(directionControl, location, hasStraightAdjustmen, hasLeftAdjustmen, hasRightAdjustmen);
+    var trafficLight = new TrafficLight(
+      new Point(this.data.directions[1].lat, this.data.directions[1].lng),
+      new Point(this.data.latlng.lat, this.data.latlng.lng),
+      this.adjustmentDirections.includes('Straight'),
+      this.adjustmentDirections.includes('Left'),
+      this.adjustmentDirections.includes('Right'));
     this.trafficLightService.create(trafficLight);
-    this.trafficLightService.addItemOnMap(trafficLight, this.data.map);
+    this.trafficLightService.addItemOnMap(trafficLight, this.data.map, [this.data.selectDublicateMode$, this.data.selectOppositeMode$]);
     this.close();
     this.snackBar.open('Traffic light was successfully added!', 'Close', { duration: 4000 });
   }

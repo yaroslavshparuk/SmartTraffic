@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { MapItemPropertyComponent } from '../map-item-property/map-item-property.component';
 import { TrafficLight } from '../models/traffic-light';
 import * as L from 'leaflet';
@@ -16,21 +17,22 @@ export class TrafficLightService {
   public getAll() : Observable<TrafficLight[]> {
     return this.http.get<TrafficLight[]>(this.baseUrl + 'TrafficLight/GetAll');
   }
-  public create(trafficLight: TrafficLight) : void{
-    this.http.post(this.baseUrl + 'TrafficLight/Create', trafficLight)
-      .subscribe(result => {
 
-      }, error => console.error(error));
+  public create(trafficLight: TrafficLight) : void{
+    this.http.post(this.baseUrl + 'TrafficLight/Create', trafficLight).pipe(
+      first()
+      ).subscribe();
   }
 
-  public addItemOnMap(item: TrafficLight, map: L.DrawMap): void {
+  public addItemOnMap(item: TrafficLight, map: L.DrawMap, modes: BehaviorSubject<any>[]): void {
     L.marker([item.location.latitude, item.location.longitude])
-      .setIcon(L.icon({ iconUrl: "../../assets/icons/traffic-light-icon-2.png", iconSize: [22, 22] }))
+      .setIcon(L.icon({ iconUrl: "assets/icons/traffic-light-icon.png", iconSize: [22, 22] }))
       .addEventListener('click', () => {
         this.dialog.open(MapItemPropertyComponent, {
-          data: { map, lat: item.location.latitude, lng: item.location.longitude }
+          data: { map, item, modes }
         });
       })
       .addTo(map);
   }
 }
+

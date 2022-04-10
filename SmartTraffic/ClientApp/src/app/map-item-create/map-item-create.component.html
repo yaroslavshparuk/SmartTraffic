@@ -8,11 +8,11 @@
         <mat-icon>traffic</mat-icon>
       </button>
     </div>
-    <div>
+    <div align="end">
       <button mat-button matStepperNext>Next</button>
     </div>
   </mat-step>
-  <mat-step>
+  <mat-step [completed]="isAdjustmentDirectionsSelected">
     <ng-template matStepLabel>Select adjustment directions</ng-template>
     <div style="height: 100px;" align="start">
       <mat-button-toggle-group style="margin-top: 20px; margin-right: 25px;" [(ngModel)]="adjustmentDirections" multiple>
@@ -20,6 +20,32 @@
         <mat-button-toggle value="Straight">Straight</mat-button-toggle>
         <mat-button-toggle value="Right">Right</mat-button-toggle>
       </mat-button-toggle-group>
+    </div>
+    <div align="end">
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Select dublicate traffic light (optional)</ng-template>
+    <div style="height: 100px;" align="start">
+      <button style="margin-top: 20px; margin-left: 5px;" mat-fab
+        (click)="selectDublicate()">
+        <mat-icon>traffic</mat-icon>
+      </button>
+    </div>
+    <div align="end">
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Select opposite traffic light (optional)</ng-template>
+    <div style="height: 100px;" align="start">
+      <button style="margin-top: 20px; margin-left: 5px;" mat-fab
+        (click)="selectOpposite()">
+        <mat-icon>traffic</mat-icon>
+      </button>
     </div>
     <div align="end">
       <button mat-button matStepperPrevious>Back</button>
