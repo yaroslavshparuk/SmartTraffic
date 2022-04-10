@@ -12,7 +12,7 @@
       <button mat-button matStepperNext>Next</button>
     </div>
   </mat-step>
-  <mat-step [completed]="adjustmentDirections.length > 0">
+  <mat-step>
     <ng-template matStepLabel>Select adjustment directions</ng-template>
     <div style="height: 100px;" align="start">
       <mat-button-toggle-group style="margin-top: 20px; margin-right: 25px;" [(ngModel)]="adjustmentDirections" multiple>

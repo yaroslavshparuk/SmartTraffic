@@ -3,6 +3,9 @@ import { MatDialog } from '@angular/material/dialog';
 import * as L from 'leaflet';
 import { BehaviorSubject } from 'rxjs';
 import { MapItemCreateComponent } from '../map-item-create/map-item-create.component';
+import { MapItemPropertyComponent } from '../map-item-property/map-item-property.component';
+import { TrafficLight } from '../models/traffic-light';
+import { TrafficLightService } from '../services/traffic-light-service';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -12,7 +15,9 @@ export class MapComponent implements OnInit, AfterViewInit {
   private map: any;
   private drawControl: L.Control.Draw | undefined;
   private editableLayers: L.FeatureGroup<any> = new L.FeatureGroup();
-  constructor(private dialog: MatDialog, private ElByClassName: ElementRef) { }
+  constructor(private dialog: MatDialog,
+    private ElByClassName: ElementRef,
+    private trafficLightService: TrafficLightService) { }
 
   ngOnInit(): void {
     this.initMap();
@@ -77,5 +82,10 @@ export class MapComponent implements OnInit, AfterViewInit {
       }
     };
     this.drawControl = new L.Control.Draw(options as any);
+    this.trafficLightService.getAll().subscribe(items => {
+      items.forEach(item => {
+        this.trafficLightService.addItemOnMap(item, this.map);
+      });
+    })
   }
 }

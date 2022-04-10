@@ -1,12 +1,18 @@
 import { Point } from "./point";
 
 export class TrafficLight {
-  DirectionControl: Point;
-  AdjustmentDirection: string[];
-  Location: Point;
-  constructor(DirectionControl: Point, AdjustmentDirection: string[], Location: Point) {
-    this.DirectionControl = DirectionControl;
-    this.AdjustmentDirection = AdjustmentDirection;
-    this.Location = Location;
+  id: number | undefined;
+  directionControl: Point;
+  hasStraightAdjustmen: boolean;
+  hasLeftAdjustmen: boolean;
+  hasRightAdjustmen: boolean;
+  location: Point;
+  constructor(directionControl: Point, location: Point, hasStraightAdjustmen: boolean, hasLeftAdjustmen: boolean, hasRightAdjustmen: boolean, id?: number) {
+    this.directionControl = directionControl;
+    this.location = location;
+    this.hasStraightAdjustmen = hasStraightAdjustmen;
+    this.hasLeftAdjustmen = hasLeftAdjustmen;
+    this.hasRightAdjustmen = hasRightAdjustmen;
+    this.id = id;
   }
 }
