@@ -1,10 +1,10 @@
 <h1 mat-dialog-title>Create traffic light</h1>
-<mat-stepper orientation="vertical" [linear]="true" #stepper>
+<mat-stepper orientation="vertical" [linear]="true" [selectedIndex]="data.step ?? 0" #stepper>
   <mat-step [completed]="isDirectionsSelected">
-    <ng-template matStepLabel>Specify the direction of control</ng-template>
+    <ng-template matStepLabel>Select direction of control</ng-template>
     <div style="height: 100px;" align="start">
-      <button style="margin-top: 20px; margin-left: 5px;" mat-fab matTooltip="{{getTooltip}}" color="{{getColor}}"
-        (click)="specifyDirection()">
+      <button style="margin-top: 20px; margin-left: 5px;" mat-fab [matTooltip]="getDirectionTooltip" [color]="getDirectionColor"
+        (click)="select(1)">
         <mat-icon>traffic</mat-icon>
       </button>
     </div>
@@ -15,7 +15,8 @@
   <mat-step [completed]="isAdjustmentDirectionsSelected">
     <ng-template matStepLabel>Select adjustment directions</ng-template>
     <div style="height: 100px;" align="start">
-      <mat-button-toggle-group style="margin-top: 20px; margin-right: 25px;" [(ngModel)]="adjustmentDirections" multiple>
+      <mat-button-toggle-group style="margin-top: 20px; margin-right: 25px;" [ngModel]="data.adjustmentDirections$ | async"
+      (ngModelChange)="data.adjustmentDirections$.next($event)" multiple>
         <mat-button-toggle value="Left">Left</mat-button-toggle>
         <mat-button-toggle value="Straight">Straight</mat-button-toggle>
         <mat-button-toggle value="Right">Right</mat-button-toggle>
@@ -29,8 +30,8 @@
   <mat-step>
     <ng-template matStepLabel>Select dublicate traffic light (optional)</ng-template>
     <div style="height: 100px;" align="start">
-      <button style="margin-top: 20px; margin-left: 5px;" mat-fab
-        (click)="selectDublicate()">
+      <button style="margin-top: 20px; margin-left: 5px;" mat-fab [color]="getDublicationColor" [matTooltip]="getDublicationTooltip"
+        (click)="select(2)">
         <mat-icon>traffic</mat-icon>
       </button>
     </div>
@@ -42,8 +43,8 @@
   <mat-step>
     <ng-template matStepLabel>Select opposite traffic light (optional)</ng-template>
     <div style="height: 100px;" align="start">
-      <button style="margin-top: 20px; margin-left: 5px;" mat-fab
-        (click)="selectOpposite()">
+      <button style="margin-top: 20px; margin-left: 5px;" mat-fab [color]="getOppositeColor" [matTooltip]="getOppositeTooltip"
+        (click)="select(3)">
         <mat-icon>traffic</mat-icon>
       </button>
     </div>

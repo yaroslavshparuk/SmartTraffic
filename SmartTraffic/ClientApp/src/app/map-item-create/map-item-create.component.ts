@@ -4,42 +4,30 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TrafficLight } from '../models/traffic-light';
 import { Point } from '../models/point';
 import { TrafficLightService } from '../services/traffic-light-service';
+import { ModeType } from '../models/mode';
+import { ModsService } from '../services/mods.service';
 @Component({
   selector: 'app-map-item-create',
   templateUrl: './map-item-create.component.html'
 })
 export class MapItemCreateComponent implements OnInit {
-  adjustmentDirections: string[] = [];
   constructor(
-    @Inject(MAT_DIALOG_DATA) private data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<MapItemCreateComponent>,
     private snackBar: MatSnackBar,
-    private trafficLightService: TrafficLightService) {
-  }
+    private modsService: ModsService,
+    private trafficLightService: TrafficLightService) { }
+
   ngOnInit(): void {
+    this.dialogRef.disableClose = true;
   }
 
-  specifyDirection(): void {
-    this.data.specifyDirectionMode$.next(true);
-    this.close();
-  }
-
-  selectDublicate(): void {
-    this.data.selectDublicateMode$.next(true);
-    this.close();
-  }
-
-  selectOpposite(): void {
-    this.data.selectOppositeMode$.next(true);
-    this.close();
-  }
-
-  public get getColor(): string {
+  public get getDirectionColor(): string {
     return this.isDirectionsSelected ? 'primary' : 'warn';
   }
 
-  public get getTooltip(): string {
-    return this.isDirectionsSelected ? 'Edit the direction of control' : 'Specify the direction of control';
+  public get getDirectionTooltip(): string {
+    return this.isDirectionsSelected ? 'Edit direction of control' : 'Select direction of control';
   }
 
   public get isDirectionsSelected(): boolean {
@@ -47,19 +35,40 @@ export class MapItemCreateComponent implements OnInit {
   }
 
   public get isAdjustmentDirectionsSelected(): boolean {
-    return this.adjustmentDirections.length > 0;
+    return this.data.adjustmentDirections$.value.length > 0;
+  }
+
+  public get getDublicationColor(): string {
+    return !!this.data.itemDublicate ? 'primary' : 'accent';
+  }
+
+  public get getDublicationTooltip(): string {
+    return !!this.data.itemDublicate ? 'Edit dublicate of traffic light' : 'Select dublicate traffic light';
+  }
+
+  public get getOppositeColor(): string {
+    return !!this.data.itemOpposite ? 'primary' : 'accent';
+  }
+
+  public get getOppositeTooltip(): string {
+    return !!this.data.itemOpposite ? 'Edit opposite traffic light' : 'Select opposite traffic light';
+  }
+
+  select(type: ModeType): void {
+    this.modsService.enable(this.data.mods$, type);
+    this.close();
   }
 
   finish(): void {
-    if (this.adjustmentDirections.length == 0) { return; }
+    let adjustmentDirections = this.data.adjustmentDirections$.value;
     var trafficLight = new TrafficLight(
       new Point(this.data.directions[1].lat, this.data.directions[1].lng),
       new Point(this.data.latlng.lat, this.data.latlng.lng),
-      this.adjustmentDirections.includes('Straight'),
-      this.adjustmentDirections.includes('Left'),
-      this.adjustmentDirections.includes('Right'));
+      adjustmentDirections.includes('Straight'),
+      adjustmentDirections.includes('Left'),
+      adjustmentDirections.includes('Right'));
     this.trafficLightService.create(trafficLight);
-    this.trafficLightService.addItemOnMap(trafficLight, this.data.map, [this.data.selectDublicateMode$, this.data.selectOppositeMode$]);
+    this.trafficLightService.addItemOnMap(trafficLight, this.data.map, this.data.mods$);
     this.close();
     this.snackBar.open('Traffic light was successfully added!', 'Close', { duration: 4000 });
   }

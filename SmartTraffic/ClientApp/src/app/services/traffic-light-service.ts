@@ -24,12 +24,12 @@ export class TrafficLightService {
       ).subscribe();
   }
 
-  public addItemOnMap(item: TrafficLight, map: L.DrawMap, modes: BehaviorSubject<any>[]): void {
+  public addItemOnMap(item: TrafficLight, map: L.DrawMap, modes$: BehaviorSubject<any>[]): void {
     L.marker([item.location.latitude, item.location.longitude])
       .setIcon(L.icon({ iconUrl: "assets/icons/traffic-light-icon.png", iconSize: [22, 22] }))
       .addEventListener('click', () => {
         this.dialog.open(MapItemPropertyComponent, {
-          data: { map, item, modes }
+          data: { map, item, modes$ }
         });
       })
       .addTo(map);
