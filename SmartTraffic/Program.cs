@@ -1,7 +1,10 @@
+using SmartTraffic.Domain.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddControllers();
 builder.Services.AddMvc();
+builder.Services.AddScoped<TrafficLightService>();
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

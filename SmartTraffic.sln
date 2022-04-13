@@ -5,7 +5,9 @@ VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartTraffic", "SmartTraffic\SmartTraffic.csproj", "{9380C185-53F6-47F5-9ED2-22F16E49B7B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartTraffic.DAL", "SmartTraffic.DAL\SmartTraffic.DAL.csproj", "{31E62C96-2B9E-4430-84F6-50D32A805520}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartTraffic.DAL", "SmartTraffic.DAL\SmartTraffic.DAL.csproj", "{31E62C96-2B9E-4430-84F6-50D32A805520}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartTraffic.Domain", "SmartTraffic.Domain\SmartTraffic.Domain.csproj", "{8705EEDA-7B8A-45A5-9C0B-D5117470EB9C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{31E62C96-2B9E-4430-84F6-50D32A805520}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31E62C96-2B9E-4430-84F6-50D32A805520}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31E62C96-2B9E-4430-84F6-50D32A805520}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8705EEDA-7B8A-45A5-9C0B-D5117470EB9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8705EEDA-7B8A-45A5-9C0B-D5117470EB9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8705EEDA-7B8A-45A5-9C0B-D5117470EB9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8705EEDA-7B8A-45A5-9C0B-D5117470EB9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

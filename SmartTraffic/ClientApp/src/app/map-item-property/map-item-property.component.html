@@ -1,11 +1,19 @@
-<div *ngIf="showDefaultContent$ | async; else selected">
-  <h1 mat-dialog-title>Coordinates</h1>
-  <div mat-dialog-content>
-    Id: {{data.item.id}}
-    Lat: {{data.item.location.latitude}}
-    Long: {{data.item.location.longitude}}
+<ng-container [ngTemplateOutlet]="(showError$ | async) ? error : (showDefaultContent$ | async) ? default : selected"></ng-container>
+
+<ng-template #error>
+  This item has been already selected
+  <div>
+    <button mat-button (click)="close()">OK</button>
   </div>
-</div>
+</ng-template>
+<ng-template #default>
+    <h1 mat-dialog-title>Coordinates</h1>
+    <div mat-dialog-content>
+      Id: {{data.item.id}}
+      Lat: {{data.item.location.latitude}}
+      Long: {{data.item.location.longitude}}
+    </div>
+</ng-template>
 <ng-template #selected>
   <div mat-dialog-content>
     Item with Id: {{data.item.id}} was selected

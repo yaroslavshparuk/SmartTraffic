@@ -10,5 +10,7 @@
         public bool HasStraightAdjustmen { get; set; }
         public bool HasLeftAdjustmen { get; set; }
         public bool HasRightAdjustmen { get; set; }
+        public int OppositeId { get; set; }
+        public int DublicateId { get; set; }
     }
 }

@@ -15,11 +15,11 @@ export class MapComponent implements OnInit, AfterViewInit {
   private map: any;
   private drawControl: L.Control.Draw | undefined;
   private editableLayers: L.FeatureGroup<any> = new L.FeatureGroup();
+  private adjustmentDirections$ = new BehaviorSubject<string[]>([]);
   private mods$ = [
     new BehaviorSubject<Mode>(new Mode(false, ModeType.Direction)),
     new BehaviorSubject<Mode>(new Mode(false, ModeType.Dublicate)),
     new BehaviorSubject<Mode>(new Mode(false, ModeType.Opposite))];
-  private adjustmentDirections$ = new BehaviorSubject<string[]>([]);
   constructor(private dialog: MatDialog,
     private ElByClassName: ElementRef,
     private modsService: ModsService,
@@ -30,92 +30,79 @@ export class MapComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    let latlng: any;
     this.map.on('dblclick', (e: any) => {
       if (this.modsService.isAnyModeEnabled(this.mods$)) { return; }
+      latlng = e.latlng;
       const popup = L.popup().setContent('<button style="border-radius: 6px; background-color: #ccd9ff; color: black;" id="button-add-light">Add traffic light</button>').setLatLng(e.latlng);
       this.map.openPopup(popup);
-      let line: L.LatLngExpression[] = [e.latlng, L.latLng(e.latlng.lat - -0.00017, e.latlng.lng)];
-      let itemDublicate : any;
-      let itemOpposite: any;
       L.DomEvent.addListener(L.DomUtil.get('button-add-light') as HTMLElement, 'click', () => {
         this.map.closePopup(popup);
         this.dialog.open(MapItemCreateComponent, {
           data: {
             step: 0,
-            itemOpposite,
-            itemDublicate,
             map: this.map,
-            latlng: e.latlng,
             mods$: this.mods$,
             adjustmentDirections$: this.adjustmentDirections$
           }
         });
-        this.modsService.getMode(this.mods$, ModeType.Direction)?.subscribe(mode => {
-          if (mode.enabled) {
-            this.map.addControl(this.drawControl);
-            let layer = L.polyline(line, { color: 'SlateBlue', weight: 10 });
-            this.editableLayers.addLayer(layer);
-            (this.ElByClassName.nativeElement.querySelector('.leaflet-draw-edit-edit') as HTMLElement).click();
-            this.map.on(L.Draw.Event.EDITED, () => this.map.removeControl(this.drawControl));
-            (this.ElByClassName.nativeElement.querySelector('.leaflet-draw-actions') as HTMLElement)
-              .firstChild?.firstChild?.addEventListener('click', () => {
-                this.modsService.disable(this.mods$, ModeType.Direction);
-                this.editableLayers.removeLayer(layer);
-                this.dialog.open(MapItemCreateComponent, {
-                  data: {
-                    step: 0,
-                    itemOpposite,
-                    itemDublicate,
-                    map: this.map,
-                    directions: line,
-                    latlng: e.latlng,
-                    mods$: this.mods$,
-                    adjustmentDirections$: this.adjustmentDirections$
-                  }
-                });
-              })
-          }
-        });
-        this.modsService.getMode(this.mods$, ModeType.Dublicate).pipe(
-        ).subscribe(mode => {
-          if (!!mode.value && mode.enabled) {
-            this.modsService.disable(this.mods$, ModeType.Dublicate);
-            itemDublicate = mode.value;
-            this.dialog.open(MapItemCreateComponent, {
-              data: {
-                step: 2,
-                itemOpposite,
-                itemDublicate,
-                map: this.map,
-                directions: line,
-                latlng: e.latlng,
-                mods$: this.mods$,
-                adjustmentDirections$: this.adjustmentDirections$
-              }
-            });
-          }
-        });
-        this.modsService.getMode(this.mods$, ModeType.Opposite).pipe(
-        ).subscribe(mode => {
-          if (!!mode.value && mode.enabled) {
-            this.modsService.disable(this.mods$, ModeType.Opposite);
-            itemOpposite = mode.value;
-            this.dialog.open(MapItemCreateComponent, {
-              data: {
-                step: 3,
-                itemOpposite,
-                itemDublicate,
-                map: this.map,
-                directions: line,
-                latlng: e.latlng,
-                mods$: this.mods$,
-                adjustmentDirections$: this.adjustmentDirections$
-              }
-            });
-          }
-        });
       });
     });
+
+
+    this.modsService.getMode(this.mods$, ModeType.Direction).subscribe(mode => {
+      if (mode.enabled) {
+        this.map.addControl(this.drawControl);
+        this.editableLayers.addLayer(L.polyline([latlng, L.latLng(latlng.lat + 0.00017, latlng.lng)], { color: 'SlateBlue', weight: 10 }));
+        (this.ElByClassName.nativeElement.querySelector('.leaflet-draw-edit-edit') as HTMLElement).click();
+        this.map.on(L.Draw.Event.EDITED, () => this.map.removeControl(this.drawControl));
+        (this.ElByClassName.nativeElement.querySelector('.leaflet-draw-actions') as HTMLElement)
+          .firstChild?.firstChild?.addEventListener('click', () => {
+            this.editableLayers.clearLayers();
+            this.modsService.setEnable(this.mods$, ModeType.Direction, false);
+            this.dialog.open(MapItemCreateComponent, {
+              data: {
+                step: 0,
+                map: this.map,
+                directions: [latlng, L.latLng(latlng.lat + 0.00017, latlng.lng)],
+                mods$: this.mods$,
+                adjustmentDirections$: this.adjustmentDirections$
+              }
+            });
+          });
+      }
+    });
+
+    this.modsService.getMode(this.mods$, ModeType.Dublicate)
+      .subscribe(mode => {
+        if (!!mode.value && mode.enabled) {
+          this.modsService.setEnable(this.mods$, ModeType.Dublicate, false);
+          this.dialog.open(MapItemCreateComponent, {
+            data: {
+              step: 2,
+              map: this.map,
+              directions: [latlng, L.latLng(latlng.lat + 0.00017, latlng.lng)],
+              mods$: this.mods$,
+              adjustmentDirections$: this.adjustmentDirections$
+            }
+          });
+        }
+      });
+    this.modsService.getMode(this.mods$, ModeType.Opposite)
+      .subscribe(mode => {
+        if (!!mode.value && mode.enabled) {
+          this.modsService.setEnable(this.mods$, ModeType.Opposite, false);
+          this.dialog.open(MapItemCreateComponent, {
+            data: {
+              step: 3,
+              map: this.map,
+              directions: [latlng, L.latLng(latlng.lat + 0.00017, latlng.lng)],
+              mods$: this.mods$,
+              adjustmentDirections$: this.adjustmentDirections$
+            }
+          });
+        }
+      });
   }
 
   private initMap(): void {

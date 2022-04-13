@@ -1,11 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { TrafficLight } from '../models/traffic-light';
 import { Point } from '../models/point';
 import { TrafficLightService } from '../services/traffic-light-service';
 import { ModeType } from '../models/mode';
 import { ModsService } from '../services/mods.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-map-item-create',
   templateUrl: './map-item-create.component.html'
@@ -39,36 +39,42 @@ export class MapItemCreateComponent implements OnInit {
   }
 
   public get getDublicationColor(): string {
-    return !!this.data.itemDublicate ? 'primary' : 'accent';
+    return !!this.modsService.getMode(this.data.mods$, ModeType.Dublicate).value.value ? 'primary' : 'accent';
   }
 
   public get getDublicationTooltip(): string {
-    return !!this.data.itemDublicate ? 'Edit dublicate of traffic light' : 'Select dublicate traffic light';
+    return !!this.modsService.getMode(this.data.mods$, ModeType.Dublicate).value.value ? 'Edit dublicate of traffic light' : 'Select dublicate traffic light';
   }
 
   public get getOppositeColor(): string {
-    return !!this.data.itemOpposite ? 'primary' : 'accent';
+    return !!this.modsService.getMode(this.data.mods$, ModeType.Opposite).value.value ? 'primary' : 'accent';
   }
 
   public get getOppositeTooltip(): string {
-    return !!this.data.itemOpposite ? 'Edit opposite traffic light' : 'Select opposite traffic light';
+    return !!this.modsService.getMode(this.data.mods$, ModeType.Opposite).value.value ? 'Edit opposite traffic light' : 'Select opposite traffic light';
   }
 
   select(type: ModeType): void {
-    this.modsService.enable(this.data.mods$, type);
+    this.modsService.setValue(this.data.mods$, type, null);
+    this.modsService.setEnable(this.data.mods$, type, true);
     this.close();
   }
 
   finish(): void {
     let adjustmentDirections = this.data.adjustmentDirections$.value;
     var trafficLight = new TrafficLight(
+      new Point(this.data.directions[0].lat, this.data.directions[0].lng),
       new Point(this.data.directions[1].lat, this.data.directions[1].lng),
-      new Point(this.data.latlng.lat, this.data.latlng.lng),
       adjustmentDirections.includes('Straight'),
       adjustmentDirections.includes('Left'),
-      adjustmentDirections.includes('Right'));
-    this.trafficLightService.create(trafficLight);
-    this.trafficLightService.addItemOnMap(trafficLight, this.data.map, this.data.mods$);
+      adjustmentDirections.includes('Right'),
+      this.data.itemOpposite,
+      this.data.itemDublicate);
+    this.trafficLightService.create(trafficLight).subscribe(x => {
+      this.trafficLightService.addItemOnMap(x, this.data.map, this.data.mods$);
+    });
+    this.data.adjustmentDirections$.next([]);
+    this.modsService.makeDefaultValues(this.data.mods$);
     this.close();
     this.snackBar.open('Traffic light was successfully added!', 'Close', { duration: 4000 });
   }

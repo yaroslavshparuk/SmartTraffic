@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { enableDebugTools } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 import { Mode, ModeType } from '../models/mode';
 
@@ -9,24 +10,24 @@ export class ModsService {
 
   constructor() { }
 
+  makeDefaultValues(mods$: BehaviorSubject<Mode>[]){
+    mods$.forEach(mode$ => {
+      let mode = mode$.value;
+      mode.enabled = false;
+      mode.value = null;
+      mode$.next(mode);
+    });
+  }
+
   isAnyModeEnabled(mods$: BehaviorSubject<Mode>[]) : boolean {
     return !!mods$.map(x => x.value).find(x => x.enabled);
   }
 
-  enable(mods$: BehaviorSubject<Mode>[], type: ModeType){
+  setEnable(mods$: BehaviorSubject<Mode>[], type: ModeType, enabled: boolean) {
     let selectDirectionMode$ = this.getMode(mods$, type);
     if(!!selectDirectionMode$){
       let selectDirectionMode = selectDirectionMode$.value;
-      selectDirectionMode.enabled = true;
-      selectDirectionMode$?.next(selectDirectionMode);
-    }
-  }
-
-  disable(mods$: BehaviorSubject<Mode>[], type: ModeType){
-    let selectDirectionMode$ = this.getMode(mods$, type);
-    if(!!selectDirectionMode$){
-      let selectDirectionMode = selectDirectionMode$.value;
-      selectDirectionMode.enabled = false;
+      selectDirectionMode.enabled = enabled;
       selectDirectionMode$?.next(selectDirectionMode);
     }
   }
