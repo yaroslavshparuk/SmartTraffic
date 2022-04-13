@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TrafficLight } from '../models/traffic-light';
 import { Point } from '../models/point';
 import { TrafficLightService } from '../services/traffic-light-service';
-import { ModeType } from '../models/mode';
+import { Mode, ModeType } from '../models/mode';
 import { ModsService } from '../services/mods.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
@@ -39,19 +39,27 @@ export class MapItemCreateComponent implements OnInit {
   }
 
   public get getDublicationColor(): string {
-    return !!this.modsService.getMode(this.data.mods$, ModeType.Dublicate).value.value ? 'primary' : 'accent';
+    return !!this.dublicateItem.value ? 'primary' : 'accent';
   }
 
   public get getDublicationTooltip(): string {
-    return !!this.modsService.getMode(this.data.mods$, ModeType.Dublicate).value.value ? 'Edit dublicate of traffic light' : 'Select dublicate traffic light';
+    return !!this.dublicateItem.value ? 'Edit dublicate of traffic light' : 'Select dublicate traffic light';
+  }
+
+  public get dublicateItem(): Mode {
+    return this.modsService.getMode(this.data.mods$, ModeType.Dublicate).value;
   }
 
   public get getOppositeColor(): string {
-    return !!this.modsService.getMode(this.data.mods$, ModeType.Opposite).value.value ? 'primary' : 'accent';
+    return !!this.oppositeItem.value ? 'primary' : 'accent';
   }
 
   public get getOppositeTooltip(): string {
-    return !!this.modsService.getMode(this.data.mods$, ModeType.Opposite).value.value ? 'Edit opposite traffic light' : 'Select opposite traffic light';
+    return !!this.oppositeItem.value ? 'Edit opposite traffic light' : 'Select opposite traffic light';
+  }
+
+  public get oppositeItem(): Mode {
+    return this.modsService.getMode(this.data.mods$, ModeType.Opposite).value;
   }
 
   select(type: ModeType): void {
@@ -68,8 +76,9 @@ export class MapItemCreateComponent implements OnInit {
       adjustmentDirections.includes('Straight'),
       adjustmentDirections.includes('Left'),
       adjustmentDirections.includes('Right'),
-      this.data.itemOpposite,
-      this.data.itemDublicate);
+      this.oppositeItem.value,
+      this.dublicateItem.value);
+
     this.trafficLightService.create(trafficLight).subscribe(x => {
       this.trafficLightService.addItemOnMap(x, this.data.map, this.data.mods$);
     });

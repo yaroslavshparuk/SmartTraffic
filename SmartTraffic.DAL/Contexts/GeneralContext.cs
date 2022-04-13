@@ -6,6 +6,7 @@ namespace SmartTraffic.DAL.Contexts
     public class GeneralContext : DbContext
     {
         public DbSet<TrafficLight> TrafficLights { get; set; }
+        public DbSet<TrafficLightGroup> TrafficLightGroups { get; set; }
 
         public GeneralContext()
         {

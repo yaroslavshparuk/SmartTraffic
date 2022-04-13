@@ -39,12 +39,7 @@ export class MapComponent implements OnInit, AfterViewInit {
       L.DomEvent.addListener(L.DomUtil.get('button-add-light') as HTMLElement, 'click', () => {
         this.map.closePopup(popup);
         this.dialog.open(MapItemCreateComponent, {
-          data: {
-            step: 0,
-            map: this.map,
-            mods$: this.mods$,
-            adjustmentDirections$: this.adjustmentDirections$
-          }
+          data: this.createData(0, null)
         });
       });
     });
@@ -61,13 +56,7 @@ export class MapComponent implements OnInit, AfterViewInit {
             this.editableLayers.clearLayers();
             this.modsService.setEnable(this.mods$, ModeType.Direction, false);
             this.dialog.open(MapItemCreateComponent, {
-              data: {
-                step: 0,
-                map: this.map,
-                directions: [latlng, L.latLng(latlng.lat + 0.00017, latlng.lng)],
-                mods$: this.mods$,
-                adjustmentDirections$: this.adjustmentDirections$
-              }
+              data: this.createData(0, latlng)
             });
           });
       }
@@ -78,31 +67,30 @@ export class MapComponent implements OnInit, AfterViewInit {
         if (!!mode.value && mode.enabled) {
           this.modsService.setEnable(this.mods$, ModeType.Dublicate, false);
           this.dialog.open(MapItemCreateComponent, {
-            data: {
-              step: 2,
-              map: this.map,
-              directions: [latlng, L.latLng(latlng.lat + 0.00017, latlng.lng)],
-              mods$: this.mods$,
-              adjustmentDirections$: this.adjustmentDirections$
-            }
+            data: this.createData(2, latlng)
           });
         }
       });
+
     this.modsService.getMode(this.mods$, ModeType.Opposite)
       .subscribe(mode => {
         if (!!mode.value && mode.enabled) {
           this.modsService.setEnable(this.mods$, ModeType.Opposite, false);
           this.dialog.open(MapItemCreateComponent, {
-            data: {
-              step: 3,
-              map: this.map,
-              directions: [latlng, L.latLng(latlng.lat + 0.00017, latlng.lng)],
-              mods$: this.mods$,
-              adjustmentDirections$: this.adjustmentDirections$
-            }
+            data: this.createData(3, latlng)
           });
         }
       });
+  }
+
+  private createData(step: number, latlng: any) {
+    return {
+      step,
+      map: this.map,
+      directions: !!latlng ? [latlng, L.latLng(latlng?.lat + 0.00017, latlng?.lng)] : null,
+      mods$: this.mods$,
+      adjustmentDirections$: this.adjustmentDirections$
+    }
   }
 
   private initMap(): void {

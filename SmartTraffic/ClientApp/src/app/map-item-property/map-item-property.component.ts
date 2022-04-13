@@ -30,7 +30,8 @@ export class MapItemPropertyComponent implements OnInit {
     });
   }
 
-  closeAndChangeMode() {
+  // TODO: check for the same group also
+  closeAndChangeModeValue() {
     if (!!this.selectedItemType) {
       this.modsService.setValue(this.data.mods$, this.selectedItemType, this.data.item.id);
       this.close();

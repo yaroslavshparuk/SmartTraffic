@@ -3,6 +3,7 @@
     public class TrafficLight
     {
         public int Id { get; set; }
+        public int? TrafficLightGroupId { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public double DirectionControlLatitude { get; set; }
@@ -10,7 +11,6 @@
         public bool HasStraightAdjustmen { get; set; }
         public bool HasLeftAdjustmen { get; set; }
         public bool HasRightAdjustmen { get; set; }
-        public int OppositeId { get; set; }
-        public int DublicateId { get; set; }
+        public virtual TrafficLightGroup TrafficLightGroup { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace SmartTraffic.DTOs
+﻿namespace SmartTraffic.Domain.Models
 {
     public struct Point
     {
