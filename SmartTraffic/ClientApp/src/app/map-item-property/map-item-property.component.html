@@ -1,24 +1,24 @@
 <ng-container [ngTemplateOutlet]="(showError$ | async) ? error : (showDefaultContent$ | async) ? default : selected"></ng-container>
 
 <ng-template #error>
-  This item has been already selected
+  Цей світлофор вже вибрано!
   <div>
     <button mat-button (click)="close()">OK</button>
   </div>
 </ng-template>
 <ng-template #default>
-    <h1 mat-dialog-title>Coordinates</h1>
+    <h1 mat-dialog-title>Координати</h1>
     <div mat-dialog-content>
       Id: {{data.item.id}}
-      Lat: {{data.item.location.latitude}}
-      Long: {{data.item.location.longitude}}
+      Довгота: {{data.item.location.latitude}}
+      Широта: {{data.item.location.longitude}}
     </div>
 </ng-template>
 <ng-template #selected>
   <div mat-dialog-content>
-    Item with Id: {{data.item.id}} was selected
+    Вибрано світлофор з Id: {{data.item.id}}
   </div>
   <div>
-    <button mat-button (click)="closeAndChangeModeValue()">Confirm</button>
+    <button mat-button (click)="closeAndChangeModeValue()">ОК</button>
   </div>
 </ng-template>

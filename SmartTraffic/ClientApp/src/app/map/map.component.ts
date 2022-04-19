@@ -34,7 +34,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     this.map.on('dblclick', (e: any) => {
       if (this.modsService.isAnyModeEnabled(this.mods$)) { return; }
       latlng = e.latlng;
-      const popup = L.popup().setContent('<button style="border-radius: 6px; background-color: #ccd9ff; color: black;" id="button-add-light">Add traffic light</button>').setLatLng(e.latlng);
+      const popup = L.popup().setContent('<button style="border-radius: 6px; background-color: #ccd9ff; color: black;" id="button-add-light">Додати світлофор</button>').setLatLng(e.latlng);
       this.map.openPopup(popup);
       L.DomEvent.addListener(L.DomUtil.get('button-add-light') as HTMLElement, 'click', () => {
         this.map.closePopup(popup);

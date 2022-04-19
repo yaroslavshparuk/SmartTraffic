@@ -27,7 +27,7 @@ export class MapItemCreateComponent implements OnInit {
   }
 
   public get getDirectionTooltip(): string {
-    return this.isDirectionsSelected ? 'Edit direction of control' : 'Select direction of control';
+    return this.isDirectionsSelected ? 'Редагувати' : 'Вибрати';
   }
 
   public get isDirectionsSelected(): boolean {
@@ -43,7 +43,7 @@ export class MapItemCreateComponent implements OnInit {
   }
 
   public get getDublicationTooltip(): string {
-    return !!this.dublicateItem.value ? 'Edit dublicate of traffic light' : 'Select dublicate traffic light';
+    return !!this.dublicateItem.value ? 'Редагувати' : 'Вибрати';
   }
 
   public get dublicateItem(): Mode {
@@ -55,7 +55,7 @@ export class MapItemCreateComponent implements OnInit {
   }
 
   public get getOppositeTooltip(): string {
-    return !!this.oppositeItem.value ? 'Edit opposite traffic light' : 'Select opposite traffic light';
+    return !!this.oppositeItem.value ? 'Редагувати' : 'Вибрати';
   }
 
   public get oppositeItem(): Mode {
@@ -85,7 +85,7 @@ export class MapItemCreateComponent implements OnInit {
     this.data.adjustmentDirections$.next([]);
     this.modsService.makeDefaultValues(this.data.mods$);
     this.close();
-    this.snackBar.open('Traffic light was successfully added!', 'Close', { duration: 4000 });
+    this.snackBar.open('Світлофор успішно додано!', 'Закрити', { duration: 4000 });
   }
 
   close(): void {

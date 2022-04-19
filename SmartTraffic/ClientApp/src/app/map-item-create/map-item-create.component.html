@@ -1,7 +1,7 @@
-<h1 mat-dialog-title>Create traffic light</h1>
+<h1 mat-dialog-title>Створіть світлофор</h1>
 <mat-stepper orientation="vertical" [linear]="true" [selectedIndex]="data.step ?? 0" #stepper>
   <mat-step [completed]="isDirectionsSelected">
-    <ng-template matStepLabel>Select direction of control</ng-template>
+    <ng-template matStepLabel>Виберіть куди буде світити світлофор</ng-template>
     <div style="height: 100px;" align="start">
       <button style="margin-top: 20px; margin-left: 5px;" mat-fab [matTooltip]="getDirectionTooltip" [color]="getDirectionColor"
         (click)="select(1)">
@@ -9,26 +9,27 @@
       </button>
     </div>
     <div align="end">
-      <button mat-button matStepperNext>Next</button>
+      <button mat-button (click)="close()">Закрити</button>
+      <button mat-button matStepperNext>Наступний крок</button>
     </div>
   </mat-step>
   <mat-step [completed]="isAdjustmentDirectionsSelected">
-    <ng-template matStepLabel>Select adjustment directions</ng-template>
+    <ng-template matStepLabel>Виберіть напрямки регулювання</ng-template>
     <div style="height: 100px;" align="start">
       <mat-button-toggle-group style="margin-top: 20px; margin-right: 25px;" [ngModel]="data.adjustmentDirections$ | async"
       (ngModelChange)="data.adjustmentDirections$.next($event)" multiple>
-        <mat-button-toggle value="Left">Left</mat-button-toggle>
-        <mat-button-toggle value="Straight">Straight</mat-button-toggle>
-        <mat-button-toggle value="Right">Right</mat-button-toggle>
+        <mat-button-toggle value="Left">Наліво</mat-button-toggle>
+        <mat-button-toggle value="Straight">Прямо</mat-button-toggle>
+        <mat-button-toggle value="Right">Направо</mat-button-toggle>
       </mat-button-toggle-group>
     </div>
     <div align="end">
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button matStepperNext>Next</button>
+      <button mat-button matStepperPrevious>Назад</button>
+      <button mat-button matStepperNext>Наступний крок</button>
     </div>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>Select dublicate traffic light (optional)</ng-template>
+    <ng-template matStepLabel>Виберіть дублюючий світлофор (якщо існує)</ng-template>
     <div style="height: 100px;" align="start">
       <button style="margin-top: 20px; margin-left: 5px;" mat-fab [color]="getDublicationColor" [matTooltip]="getDublicationTooltip"
         (click)="select(2)">
@@ -36,12 +37,12 @@
       </button>
     </div>
     <div align="end">
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button matStepperNext>Next</button>
+      <button mat-button matStepperPrevious>Назад</button>
+      <button mat-button matStepperNext>Наступний крок</button>
     </div>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>Select opposite traffic light (optional)</ng-template>
+    <ng-template matStepLabel>Виберіть протилежний світлофор (якщо існує)</ng-template>
     <div style="height: 100px;" align="start">
       <button style="margin-top: 20px; margin-left: 5px;" mat-fab [color]="getOppositeColor" [matTooltip]="getOppositeTooltip"
         (click)="select(3)">
@@ -49,8 +50,8 @@
       </button>
     </div>
     <div align="end">
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="finish()">Finish</button>
+      <button mat-button matStepperPrevious>Назад</button>
+      <button mat-button (click)="finish()">Зберегти</button>
     </div>
   </mat-step>
 </mat-stepper>
