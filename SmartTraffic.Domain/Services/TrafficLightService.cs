@@ -28,38 +28,33 @@ namespace SmartTraffic.Domain.Services
         {
             using (var ctx = new GeneralContext())
             {
-                var group = new TrafficLightGroup();
+                var group = new Group();
 
-                if (trafficLightDto.DublicateId is not null)
+                if (trafficLightDto.DublicateId is not null && trafficLightDto.DublicateId is not 0)
                 {
                     group = GetGroupByTrafficLightId(trafficLightDto.DublicateId);
                 }
 
-                if (trafficLightDto.OppositeId is not null && group.OppositeGroupId is null)
+                if (group.Id is 0)
                 {
-                    group.OppositeGroupId = GetGroupByTrafficLightId(trafficLightDto.OppositeId).Id;
+                    group.GroupTypeId = ctx.GroupTypes.First(x => x.Name == "Traffic light").Id;
+                    ctx.Groups.Add(group);
+                    ctx.SaveChanges();
                 }
 
-                if (group.Id is not 0)
+                if (trafficLightDto.OppositeId is not null && trafficLightDto.OppositeId is not 0 && 
+                    !ctx.OppositeGroups.Any(x => x.OppositeGroupId == trafficLightDto.OppositeId || x.MainGroupId == trafficLightDto.OppositeId))
                 {
-                    ctx.TrafficLightGroups.Update(group);
-                }
-                else
-                {
-                    ctx.TrafficLightGroups.Add(group);
-                }
-
-                ctx.SaveChanges();
-
-                if (group.OppositeGroupId is not null)
-                {
-                    var oppositeGroup = ctx.TrafficLightGroups.FirstOrDefault(x => x.Id == group.OppositeGroupId);
-                    oppositeGroup.OppositeGroupId = group.Id;
-                    ctx.Update(oppositeGroup);
+                    ctx.OppositeGroups.Add(
+                        new OppositeGroup
+                        {
+                            MainGroupId = group.Id,
+                            OppositeGroupId = GetGroupByTrafficLightId(trafficLightDto.OppositeId).Id
+                        });
                 }
 
                 var trafficLight = _mapper.Map<TrafficLight>(trafficLightDto);
-                trafficLight.TrafficLightGroupId = group.Id;
+                trafficLight.GroupId = group.Id;
                 ctx.TrafficLights.Add(trafficLight);
                 ctx.SaveChanges();
 
@@ -67,11 +62,11 @@ namespace SmartTraffic.Domain.Services
             }
         }
 
-        private TrafficLightGroup GetGroupByTrafficLightId(int? id)
+        private Group GetGroupByTrafficLightId(int? id)
         {
             using (var ctx = new GeneralContext())
             {
-                return ctx.TrafficLights.Include(x => x.TrafficLightGroup).FirstOrDefault(x => x.Id == id).TrafficLightGroup;
+                return ctx.TrafficLights.Include(x => x.Group).FirstOrDefault(x => x.Id == id).Group;
             }
         }
     }
