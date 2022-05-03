@@ -34,8 +34,8 @@ export class MapItemCreateComponent implements OnInit {
     return this.data.directions?.length > 0;
   }
 
-  public get isAdjustmentDirectionsSelected(): boolean {
-    return this.data.adjustmentDirections$.value.length > 0;
+  public get isMacAddressSelected(): boolean {
+    return !!this.data.macAddress$.value;
   }
 
   public get getDublicationColor(): string {
@@ -69,13 +69,11 @@ export class MapItemCreateComponent implements OnInit {
   }
 
   finish(): void {
-    let adjustmentDirections = this.data.adjustmentDirections$.value;
+    let macAddress = this.data.macAddress$.value;
     var trafficLight = new TrafficLight(
       new Point(this.data.directions[0].lat, this.data.directions[0].lng),
       new Point(this.data.directions[1].lat, this.data.directions[1].lng),
-      adjustmentDirections.includes('Straight'),
-      adjustmentDirections.includes('Left'),
-      adjustmentDirections.includes('Right'),
+      true,
       this.oppositeItem.value,
       this.dublicateItem.value);
 

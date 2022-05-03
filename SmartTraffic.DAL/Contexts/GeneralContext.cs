@@ -8,12 +8,12 @@ namespace SmartTraffic.DAL.Contexts
         public DbSet<TrafficLight> TrafficLights { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<GroupType> GroupTypes { get; set; }
-        public DbSet<OppositeGroup> OppositeGroups { get; set; }
+        public DbSet<Crossroad> Crossroads { get; set; }
 
         public GeneralContext()
         {
             Database.EnsureCreated();
-            if (!OppositeGroups.Any())
+            if (!GroupTypes.Any())
             {
                 Add(new GroupType { Name = "Traffic light" });
                 SaveChanges();

@@ -13,15 +13,18 @@
       <button mat-button matStepperNext>Наступний крок</button>
     </div>
   </mat-step>
-  <mat-step [completed]="isAdjustmentDirectionsSelected">
-    <ng-template matStepLabel>Виберіть напрямки регулювання</ng-template>
+  <mat-step [completed]="isMacAddressSelected">
+    <ng-template matStepLabel>Вкажіть MAC-Address світлофора</ng-template>
     <div style="height: 100px;" align="start">
-      <mat-button-toggle-group style="margin-top: 20px; margin-right: 25px;" [ngModel]="data.adjustmentDirections$ | async"
+      <!-- <mat-button-toggle-group style="margin-top: 20px; margin-right: 25px;" [ngModel]="data.macAddress$ | async"
       (ngModelChange)="data.adjustmentDirections$.next($event)" multiple>
         <mat-button-toggle value="Left">Наліво</mat-button-toggle>
         <mat-button-toggle value="Straight">Прямо</mat-button-toggle>
         <mat-button-toggle value="Right">Направо</mat-button-toggle>
-      </mat-button-toggle-group>
+      </mat-button-toggle-group> -->
+      <mat-form-field appearance="fill" [ngModel]="data.macAddress$ | async">
+        <input matInput placeholder="12:ab:5e:3a:53:af">
+      </mat-form-field>
     </div>
     <div align="end">
       <button mat-button matStepperPrevious>Назад</button>

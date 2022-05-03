@@ -11,7 +11,6 @@ namespace SmartTraffic.Controllers
     public class TrafficLightController : ControllerBase
     {
         private readonly TrafficLightService _trafficLightService;
-
         private readonly Mapper _mapper = new Mapper(new MapperConfiguration(cfg =>
         {
             cfg.CreateMap<TrafficLight, TrafficLightDto>()

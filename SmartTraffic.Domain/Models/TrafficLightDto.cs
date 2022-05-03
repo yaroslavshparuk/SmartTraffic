@@ -7,8 +7,6 @@
         public Point DirectionControl { get; set; }
         public int? DublicateId { get; set; }
         public int? OppositeId { get; set; }
-        public bool HasStraightAdjustmen { get; set; }
-        public bool HasLeftAdjustmen { get; set; }
-        public bool HasRightAdjustmen { get; set; }
+        public bool IsAuto { get; set; }
     }
 }

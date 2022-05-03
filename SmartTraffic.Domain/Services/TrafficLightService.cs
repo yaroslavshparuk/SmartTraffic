@@ -16,6 +16,7 @@ namespace SmartTraffic.Domain.Services
                .ForMember(dest => dest.DirectionControlLatitude, act => act.MapFrom(src => src.DirectionControl.Latitude))
                .ForMember(dest => dest.DirectionControlLongitude, act => act.MapFrom(src => src.DirectionControl.Longitude));
         }));
+
         public IEnumerable<TrafficLight> GetAll()
         {
             using (var ctx = new GeneralContext())
@@ -43,13 +44,13 @@ namespace SmartTraffic.Domain.Services
                 }
 
                 if (trafficLightDto.OppositeId is not null && trafficLightDto.OppositeId is not 0 && 
-                    !ctx.OppositeGroups.Any(x => x.OppositeGroupId == trafficLightDto.OppositeId || x.MainGroupId == trafficLightDto.OppositeId))
+                    !ctx.Crossroads.Any(x => x.SecondStreetId == trafficLightDto.OppositeId || x.FirstStreetId == trafficLightDto.OppositeId))
                 {
-                    ctx.OppositeGroups.Add(
-                        new OppositeGroup
+                    ctx.Crossroads.Add(
+                        new Crossroad
                         {
-                            MainGroupId = group.Id,
-                            OppositeGroupId = GetGroupByTrafficLightId(trafficLightDto.OppositeId).Id
+                            FirstStreetId = group.Id,
+                            SecondStreetId = GetGroupByTrafficLightId(trafficLightDto.OppositeId).Id
                         });
                 }
 
@@ -66,7 +67,7 @@ namespace SmartTraffic.Domain.Services
         {
             using (var ctx = new GeneralContext())
             {
-                return ctx.TrafficLights.Include(x => x.Group).FirstOrDefault(x => x.Id == id).Group;
+                return ctx.TrafficLights.Include(x => x.Group).FirstOrDefault(x => x.Id == id)?.Group;
             }
         }
     }

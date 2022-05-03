@@ -5,24 +5,18 @@ export class TrafficLight {
   oppositeId: number | undefined;
   dublicateId: number | undefined;
   directionControl: Point;
-  hasStraightAdjustmen: boolean;
-  hasLeftAdjustmen: boolean;
-  hasRightAdjustmen: boolean;
+  isAuto: boolean;
   location: Point;
   constructor(
     location: Point,
     directionControl: Point,
-    hasStraightAdjustmen: boolean,
-    hasLeftAdjustmen: boolean,
-    hasRightAdjustmen: boolean,
+    isAuto: boolean,
     oppositeId?: number,
     dublicateId?: number,
     id?: number) {
     this.location = location;
     this.directionControl = directionControl;
-    this.hasStraightAdjustmen = hasStraightAdjustmen;
-    this.hasLeftAdjustmen = hasLeftAdjustmen;
-    this.hasRightAdjustmen = hasRightAdjustmen;
+    this.isAuto = isAuto;
     this.oppositeId = oppositeId;
     this.dublicateId = dublicateId;
     this.id = id;
