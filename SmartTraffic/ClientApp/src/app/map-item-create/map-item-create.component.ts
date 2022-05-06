@@ -80,7 +80,7 @@ export class MapItemCreateComponent implements OnInit {
     this.trafficLightService.create(trafficLight).subscribe(x => {
       this.trafficLightService.addItemOnMap(x, this.data.map, this.data.mods$);
     });
-    this.data.adjustmentDirections$.next([]);
+    //this.data.macAddress$.next(null);
     this.modsService.makeDefaultValues(this.data.mods$);
     this.close();
     this.snackBar.open('Світлофор успішно додано!', 'Закрити', { duration: 4000 });

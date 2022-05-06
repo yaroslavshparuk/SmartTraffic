@@ -16,7 +16,7 @@ namespace SmartTraffic.Domain.Jobs
             _trafficDataService = trafficDataService;
         }
 
-        public Task Invoke()
+        public async Task Invoke()
         {
             using (var ctx = new GeneralContext())
             {
@@ -37,10 +37,9 @@ namespace SmartTraffic.Domain.Jobs
                         beatDuration = BeatDuration.Lower;
                     }
 
-                    _mqqtService.Send(beatDuration.ToString(), "crossroad_" + crossroad.Id);
+                    await _mqqtService.Send(beatDuration.ToString(), "crossroad_" + crossroad.Id);
                 }
             }
-            return Task.CompletedTask;
         }
     }
 }

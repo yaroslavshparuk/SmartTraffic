@@ -19,10 +19,10 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-//app.Services.UseScheduler(scheduler =>
-//{
-//    scheduler.Schedule<CountGreenTimeJob>().EveryTenSeconds();
-//});
+app.Services.UseScheduler(scheduler =>
+{
+    scheduler.Schedule<CountGreenTimeJob>().EveryMinute();
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
