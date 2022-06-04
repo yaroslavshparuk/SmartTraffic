@@ -8,7 +8,7 @@ namespace SmartTraffic.Domain.Services
     public class TrafficDataService
     {
 
-        public Density GetDensity(int streetId)
+        public int GetCarsAmount(int streetId)
         {
             using (var ctx = new GeneralContext())
             {
@@ -25,11 +25,11 @@ namespace SmartTraffic.Domain.Services
                     point2 = new Point(second.DirectionControlLatitude, second.DirectionControlLongitude);
                 }
 
-                return GetDensity(point1, point2, Density.None);
+                return GetCarsAmount(point1, point2, 12);
             }
         }
 
-        private Density GetDensity(Point point1, Point point2, Density defaultValue)
+        private int GetCarsAmount(Point point1, Point point2, int defaultValue)
         {
             // call some api to define density on street
             return defaultValue;
