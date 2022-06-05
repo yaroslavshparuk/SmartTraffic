@@ -34,10 +34,6 @@ export class MapItemCreateComponent implements OnInit {
     return this.data.directions?.length > 0;
   }
 
-  public get isMacAddressSelected(): boolean {
-    return !!this.data.macAddress$.value;
-  }
-
   public get getDublicationColor(): string {
     return !!this.dublicateItem.value ? 'primary' : 'accent';
   }
@@ -69,7 +65,6 @@ export class MapItemCreateComponent implements OnInit {
   }
 
   finish(): void {
-    let macAddress = this.data.macAddress$.value;
     var trafficLight = new TrafficLight(
       new Point(this.data.directions[0].lat, this.data.directions[0].lng),
       new Point(this.data.directions[1].lat, this.data.directions[1].lng),
@@ -80,7 +75,6 @@ export class MapItemCreateComponent implements OnInit {
     this.trafficLightService.create(trafficLight).subscribe(x => {
       this.trafficLightService.addItemOnMap(x, this.data.map, this.data.mods$);
     });
-    //this.data.macAddress$.next(null);
     this.modsService.makeDefaultValues(this.data.mods$);
     this.close();
     this.snackBar.open('Світлофор успішно додано!', 'Закрити', { duration: 4000 });

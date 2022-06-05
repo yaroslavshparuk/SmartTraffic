@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmartTraffic.DAL.Contexts;
-using SmartTraffic.Domain.Enums;
 using SmartTraffic.Domain.Models;
 
 namespace SmartTraffic.Domain.Services
@@ -25,7 +24,7 @@ namespace SmartTraffic.Domain.Services
                     point2 = new Point(second.DirectionControlLatitude, second.DirectionControlLongitude);
                 }
 
-                return GetCarsAmount(point1, point2, 12);
+                return GetCarsAmount(point1, point2, new Random().Next(1, 100));
             }
         }
 

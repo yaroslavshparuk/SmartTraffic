@@ -15,7 +15,6 @@ export class MapComponent implements OnInit, AfterViewInit {
   private map: any;
   private drawControl: L.Control.Draw | undefined;
   private editableLayers: L.FeatureGroup<any> = new L.FeatureGroup();
-  private macAddress$ = new BehaviorSubject<string[]>([]);
   private mods$ = [
     new BehaviorSubject<Mode>(new Mode(false, ModeType.Direction)),
     new BehaviorSubject<Mode>(new Mode(false, ModeType.Dublicate)),
@@ -88,8 +87,7 @@ export class MapComponent implements OnInit, AfterViewInit {
       step,
       map: this.map,
       directions: !!latlng ? [latlng, L.latLng(latlng?.lat + 0.00017, latlng?.lng)] : null,
-      mods$: this.mods$,
-      macAddress$: this.macAddress$
+      mods$: this.mods$
     }
   }
 

@@ -9,7 +9,7 @@ builder.Services.AddMvc();
 builder.Services.AddScoped<TrafficLightService>();
 builder.Services.AddScoped<TrafficDataService>();
 builder.Services.AddScoped<MQTTService>();
-builder.Services.AddSingleton<CountGreenTimeJob>();
+builder.Services.AddScoped<CountGreenTimeJob>();
 builder.Services.AddScheduler();
 
 var app = builder.Build();

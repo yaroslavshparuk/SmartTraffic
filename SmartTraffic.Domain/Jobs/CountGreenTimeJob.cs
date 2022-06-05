@@ -87,11 +87,12 @@ namespace SmartTraffic.Domain.Jobs
                     var input_sets = new List<FuzzySet>
                     {
                         new FuzzySet(_flc.Fuzzification(_trafficDataService.GetCarsAmount(crossroad.FirstStreetId), _street1), _street1.Name),
-                        new FuzzySet(_flc.Fuzzification(_trafficDataService.GetCarsAmount(crossroad.FirstStreetId), _street2), _street2.Name)
+                        new FuzzySet(_flc.Fuzzification(_trafficDataService.GetCarsAmount(crossroad.SecondStreetId), _street2), _street2.Name)
                     };
 
                     var rulesOut = new InferEngine(_configurator, _rules, input_sets).evaluateRules()?.FirstOrDefault()?.Set;
-                    await _mqqtService.Send(rulesOut?.FirstOrDefault(x => x.FuzzyValue == rulesOut?.Max(x => x.FuzzyValue))?.MemberShipName, "crossroad_" + crossroad.Id);
+                    var controlValue = rulesOut?.FirstOrDefault(x => x.FuzzyValue == rulesOut?.Max(x => x.FuzzyValue))?.MemberShipName;
+                    await _mqqtService.Send(controlValue, "crossroad_" + crossroad.Id);
                 }
             }
         }
