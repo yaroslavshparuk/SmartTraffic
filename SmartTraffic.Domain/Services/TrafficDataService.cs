@@ -6,7 +6,6 @@ namespace SmartTraffic.Domain.Services
 {
     public class TrafficDataService
     {
-
         public int GetCarsAmount(int streetId)
         {
             using (var ctx = new GeneralContext())
@@ -26,6 +25,12 @@ namespace SmartTraffic.Domain.Services
 
                 return GetCarsAmount(point1, point2, new Random().Next(1, 100));
             }
+        }
+
+        public int GetSignal(int streetId, int defaultValue)
+        {
+            // call some api to define density on street
+            return defaultValue;
         }
 
         private int GetCarsAmount(Point point1, Point point2, int defaultValue)
